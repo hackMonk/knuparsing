@@ -19,17 +19,18 @@ def check():
         if set(alist[i]) == set(blist[i]):
             diff = 0
         else:
+            print('thew new update is', blist[i])
             diff = 1
             return diff;
     return diff
 
 def updateFile():
     fu = open("update.txt", "w+")
-    target_url = "http://gall.dcinside.com/board/lists/?id=superidea"
+    target_url = "http://gall.dcinside.com/board/lists/?id=destinychild"
     sauce = uReq(target_url).read().decode('utf-8')
     soup = BeautifulSoup(sauce, 'html.parser')
 
-    for list in soup.find_all('a', {'class':'sec_icon'}):
+    for list in soup.find_all('a', {'class':['icon_txt_n', 'icon_pic_n']}):
         try:
             fu.write(list.text+"\n")
         except UnicodeEncodeError:
@@ -38,11 +39,11 @@ def updateFile():
 
 def checkUpdateFile():
     fc = open("check.txt", "w+")
-    target_url = "http://gall.dcinside.com/board/lists/?id=superidea"
+    target_url = "http://gall.dcinside.com/board/lists/?id=destinychild"
     sauce = uReq(target_url).read().decode('utf-8')
     soup = BeautifulSoup(sauce, 'html.parser')
 
-    for list in soup.find_all('a', {'class':'sec_icon'}):
+    for list in soup.find_all('a', {'class':['icon_txt_n', 'icon_pic_n']}):
         try:
             fc.write(list.text+"\n")
         except UnicodeEncodeError:
@@ -54,12 +55,12 @@ if __name__ == "__main__":
     updateCheck = 0
     fc = open("check.txt", "w+")
     fu = open("update.txt", "w+")
-    target_url = "http://gall.dcinside.com/board/lists/?id=superidea"
+    target_url = "http://gall.dcinside.com/board/lists/?id=destinychild"
     sauce = uReq(target_url).read().decode('utf-8')
     soup = BeautifulSoup(sauce, 'html.parser')
 
-    for list in soup.find_all('a', {'class':'sec_icon'}):
-        print(list.text)
+    for list in soup.find_all('a', {'class':['icon_txt_n', 'icon_pic_n']}):
+        #print(list.text)
         try:
             fc.write(list.text+"\n")
             fu.write(list.text+"\n")
@@ -72,7 +73,6 @@ if __name__ == "__main__":
         while(updateCheck is 0):
             updateFile()
             updateCheck = check()
-            print("Loop One")
-            time.sleep(10)
-        print("there is a new update")
+            time.sleep(1)
         checkUpdateFile()
+        updateCheck = 0
